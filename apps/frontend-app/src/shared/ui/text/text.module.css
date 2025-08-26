@@ -1,0 +1,26 @@
+/* Base styles for the Text component */
+.text {
+  font-family: Arial, sans-serif;
+}
+
+/* Color variants */
+.primary {
+  color: #000;
+}
+.secondary {
+  color: #555;
+}
+.tertiary {
+  color: #aaa;
+}
+
+/* Weight variants */
+.light {
+  font-weight: 300;
+}
+.normal {
+  font-weight: 400;
+}
+.bold {
+  font-weight: 700;
+}

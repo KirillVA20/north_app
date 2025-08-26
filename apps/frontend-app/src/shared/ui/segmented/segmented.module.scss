@@ -1,0 +1,56 @@
+.segmented {
+  width: fit-content;
+  position: relative;
+  display: inline-flex;
+  padding: 5px;
+  background-color: #f5f5f5;
+  border-radius: 6px;
+  box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
+  background: var(--glass-bg);
+}
+
+.option {
+  text-align: center;
+  position: relative;
+  padding: 6px 12px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(0, 0, 0, 0.65);
+  transition: all 0.3s ease;
+  border-radius: 4px;
+  z-index: 1;
+  font-weight: 500;
+  cursor: pointer;
+
+  &:hover:not(.optionActive) {
+    color: rgba(0, 0, 0, 0.85);
+  }
+}
+
+.optionActive {
+  color: rgba(0, 0, 0, 0.88);
+  font-weight: 500;
+}
+
+.indicator {
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  border-radius: 4px;
+  background-color: #fff;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  z-index: 0;
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+
+  .option {
+    cursor: not-allowed;
+  }
+} 

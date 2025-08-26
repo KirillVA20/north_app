@@ -1,0 +1,34 @@
+.widget {
+  width: 300px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tabs {
+  display: flex;
+  margin-bottom: 20px;
+  gap: 10px;
+  justify-content: stretch;
+}
+
+.tab {
+  flex: 1;
+}
+
+.tab:hover {
+  color: #007bff;
+}
+
+.tab.active {
+  color: #007bff;
+  border-bottom: 2px solid #007bff;
+  font-weight: 500;
+}
+
+.content {
+  padding: 0 10px;
+}

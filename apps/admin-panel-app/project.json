@@ -1,0 +1,27 @@
+{
+  "name": "admin-panel-app",
+  "sourceRoot": "apps/admin-panel-app/src",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "target": "web",
+        "outputPath": "dist/apps/admin-panel-app",
+        "main": "apps/admin-panel-app/src/app/index.tsx",
+        "index": "apps/admin-panel-app/src/app/public/index.html",
+        "tsConfig": "apps/admin-panel-app/tsconfig.json",
+        "assets": ["apps/admin-panel-app/src/app/public"],
+        "webpackConfig": "apps/admin-panel-app/webpack.config.js"
+      }
+    },
+    "serve": {
+      "executor": "@nx/webpack:dev-server",
+      "options": {
+        "buildTarget": "admin-panel-app:build",
+        "port": 4202,
+        "open": true
+      }
+    }
+  }
+}

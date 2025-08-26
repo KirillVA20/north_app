@@ -1,0 +1,11 @@
+.root {
+  padding: 10px;
+  border-radius: 8px;
+  width: 300px;
+  max-height: 700px;
+  overflow-y: auto;
+}
+
+.root::-webkit-scrollbar {
+  display: none;
+}

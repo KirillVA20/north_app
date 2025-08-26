@@ -1,0 +1,68 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.input {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 14px;
+  transition: border-color 0.2s;
+
+  &:disabled {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+}
+
+// Error state
+.error {
+  border-color: #ff4d4f;
+
+  &:focus {
+    border-color: #ff4d4f;
+  }
+}
+
+// Loading state
+.loading {
+  position: relative;
+  pointer-events: none;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #ccc;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: translateY(-50%) rotate(360deg);
+  }
+}
+
+// Message
+.message {
+  font-size: 12px;
+  color: #666;
+}
+
+.error + .message {
+  color: #ff4d4f;
+} 
