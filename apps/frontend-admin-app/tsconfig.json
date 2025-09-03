@@ -1,0 +1,19 @@
+{
+  "files": [],
+  "include": [],
+  "compilerOptions": {
+  },
+  "types": ["@chakra-ui"],
+  "references": [
+    {
+      "path": "../../libs/ui"
+    },
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ],
+  "extends": "../../tsconfig.base.json"
+}

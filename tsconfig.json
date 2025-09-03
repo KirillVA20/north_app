@@ -7,19 +7,16 @@
       "path": "./apps/frontend-app"
     },
     {
-      "path": "./apps/user-app-e2e"
-    },
-    {
       "path": "./apps/user-app"
     },
     {
       "path": "./apps/guide-app"
     },
     {
-      "path": "./apps/admin-panel-app"
+      "path": "./libs/ui"
     },
     {
-      "path": "./libs/ui"
+      "path": "./apps/frontend-admin-app"
     }
   ]
 }

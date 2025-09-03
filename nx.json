@@ -44,8 +44,7 @@
       "plugin": "@nx/jest/plugin",
       "options": {
         "targetName": "test"
-      },
-      "exclude": ["apps/user-app-e2e/**/*"]
+      }
     },
     {
       "plugin": "@nx/eslint/plugin",
@@ -87,9 +86,25 @@
         "linter": "eslint"
       }
     },
+    "@nx/web:application": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "none"
+    },
     "@nx/react": {
+      "application": {
+        "babel": true,
+        "style": "scss",
+        "linter": "eslint",
+        "bundler": "webpack"
+      },
+      "component": {
+        "style": "scss"
+      },
       "library": {
-        "unitTestRunner": "jest"
+        "style": "scss",
+        "linter": "eslint"
       }
     }
   }
