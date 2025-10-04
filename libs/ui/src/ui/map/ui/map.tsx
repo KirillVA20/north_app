@@ -4,8 +4,9 @@ import {
   Placemark,
   Polyline,
 } from '@pbe/react-yandex-maps';
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode, useEffect, useRef, useState } from 'react';
 import styles from './map.module.scss';
+import { YMapsApi } from '@pbe/react-yandex-maps/typings/util/typing';
 
 const DEFAULT_CENTER = [67.568023, 33.407187];
 const DEFAULT_ZOOM = 12;
@@ -15,23 +16,24 @@ type MapProps = {
   zoom?: number;
   width?: string | number;
   height?: string | number;
-  polylineItems?: any[];
-  pointItems?: {
-    id?: string;
-    coordinates: [number, number];
-  }[];
+  polylineItems?: { id?: string; coordinates: [number, number] }[];
+  pointItems?: { id?: string; coordinates: [number, number] }[];
   pointCoords?: [number, number];
   activePoint?: {};
   onMapClick?: (coords: [number, number]) => void;
   onPointClick?: (id: string) => void;
   onPolylineClick?: (id: string) => void;
+  onPlacemarkDragend?: (coords: [number, number], index: number) => void;
+  onPlaceMarkClick?: (index: number) => void;
+  draggablePoints?: boolean;
   children?: ReactNode;
 };
 
 export const Map: FC<MapProps> = (props) => {
   const {
     onMapClick,
-    onPolylineClick,
+    onPlacemarkDragend,
+    onPlaceMarkClick,
     center = DEFAULT_CENTER,
     zoom = DEFAULT_ZOOM,
     pointCoords,
@@ -40,7 +42,21 @@ export const Map: FC<MapProps> = (props) => {
     polylineItems,
     width = '100%',
     height = '100%',
+    draggablePoints = false,
   } = props;
+
+  const handleInstanceRef = (ref: ymaps.Map, index: number) => {
+    if (ref) {
+      ref.events.add('dragend', (e) => {
+        const coords = e.get('target').geometry.getCoordinates();
+        onPlacemarkDragend?.(coords, index);
+      });
+
+      ref.events.add('click', (e) => {
+        onPlaceMarkClick?.(index);
+      });
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -59,36 +75,35 @@ export const Map: FC<MapProps> = (props) => {
         >
           <>
             {children}
+
+            {pointItems?.map((point, index) => (
+              <Placemark
+                key={point.coordinates[0]}
+                geometry={point.coordinates}
+                options={{
+                  preset: 'islands#circleIcon',
+                  iconColor: '#000',
+                  draggable: draggablePoints,
+                }}
+                instanceRef={(ref) => handleInstanceRef(ref, index)}
+              />
+            ))}
+            <Polyline
+              geometry={polylineItems?.map(({ coordinates }) => coordinates)}
+              options={{
+                strokeColor: '#FC830B',
+                strokeWidth: 4,
+              }}
+            />
             {pointCoords && (
               <Placemark
                 geometry={pointCoords}
                 options={{
-                  preset: 'islands#icon',
-                  iconColor: '#ff0000',
+                  preset: 'islands#circleDotIcon',
+                  iconColor: '#000',
                 }}
               />
             )}
-            {pointItems?.map((point) => (
-              <Placemark
-                key={point.id}
-                geometry={point.coordinates}
-                options={{
-                  preset: 'islands#icon',
-                  iconColor: '#ff0000',
-                }}
-              />
-            ))}
-            {polylineItems?.map((polyline, index) => (
-              <Polyline
-                key={index}
-                geometry={polyline.points.map((point) => point.coordinates)}
-                onClick={() => onPolylineClick?.(polyline.id)}
-                options={{
-                  strokeColor: '#228B22',
-                  strokeWidth: 4,
-                }}
-              />
-            ))}
           </>
         </BaseMap>
       </YMaps>

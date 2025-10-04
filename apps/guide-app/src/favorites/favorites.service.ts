@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { UserFavorites } from './schemas/user-favorites.schema';
 import { Spot } from '../spots/schemas/spot.schema';
 import { Route } from '../route/schemas/route.schema';
@@ -22,25 +22,53 @@ export class FavoritesService {
       throw new Error('Spot not found');
     }
 
-    return this.userFavoritesModel
+    const prev = await this.userFavoritesModel.findOne({ userId }).exec();
+
+    const result = await this.userFavoritesModel
       .findOneAndUpdate(
         { userId },
         { $addToSet: { spots: spotId } },
         { upsert: true, new: true }
       )
       .exec();
+
+    // increment rating only if the spot was newly added
+    const wasInFavoritesBefore = prev?.spots?.some(
+      (id: Types.ObjectId) => String(id) === String(spotId)
+    );
+    const isInFavoritesAfter = result?.spots?.some(
+      (id: Types.ObjectId) => String(id) === String(spotId)
+    );
+    if (!wasInFavoritesBefore && isInFavoritesAfter) {
+      await this.spotModel
+        .findByIdAndUpdate(spotId, { $inc: { rating: 1 } }, { new: true })
+        .exec();
+    }
+
+    return result;
   }
 
   async removeFromFavorites(
     userId: string,
     spotId: string
   ): Promise<UserFavorites> {
+    const prev = await this.userFavoritesModel.findOne({ userId }).exec();
+
     const result = await this.userFavoritesModel
       .findOneAndUpdate({ userId }, { $pull: { spots: spotId } }, { new: true })
       .exec();
 
     if (!result) {
       throw new Error('Favorites not found');
+    }
+
+    // decrement rating only if the spot existed before removal
+    if (
+      prev?.spots?.some((id: Types.ObjectId) => String(id) === String(spotId))
+    ) {
+      await this.spotModel
+        .findByIdAndUpdate(spotId, { $inc: { rating: -1 } }, { new: true })
+        .exec();
     }
 
     return result;

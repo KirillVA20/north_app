@@ -1,5 +1,13 @@
 // create-spot.dto.ts
-import { IsString, IsNumber, IsOptional, IsArray } from 'class-validator';
+import {
+  IsString,
+  IsNumber,
+  IsOptional,
+  IsArray,
+  ValidateNested,
+} from 'class-validator';
+import { Type } from 'class-transformer';
+import { PathPointDto } from './create-spot.dto';
 
 export class UpdateSpotDto {
   @IsString()
@@ -25,4 +33,10 @@ export class UpdateSpotDto {
   @IsOptional()
   @IsString()
   previewImageUrl?: string;
+
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => PathPointDto)
+  path?: PathPointDto[];
 }

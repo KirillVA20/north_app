@@ -5,10 +5,14 @@ import { Document } from 'mongoose';
   timestamps: true,
   toJSON: {
     virtuals: true,
-    transform: (doc, ret) => {
-      ret.id = ret._id;
-      delete ret._id;
-      delete ret.__v;
+    transform: (_doc: any, ret: Record<string, any>) => {
+      ret.id = ret._id?.toString?.() ?? ret._id;
+      if ('_id' in ret) {
+        delete ret._id;
+      }
+      if ('__v' in ret) {
+        delete ret.__v;
+      }
       return ret;
     },
   },
@@ -28,6 +32,9 @@ export class User extends Document {
 
   @Prop({ required: false })
   lastName!: string;
+
+  @Prop({ required: false })
+  refreshToken?: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

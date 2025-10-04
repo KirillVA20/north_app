@@ -46,6 +46,23 @@ export class Spot extends Document {
   @Prop({ type: String, required: true })
   userId!: string; // ID пользователя, владельца spot
 
+  @Prop({ type: Number, default: 0, min: 0 })
+  rating!: number;
+
+  @Prop({
+    type: [
+      {
+        id: { type: String, required: false },
+        coordinates: { type: [Number], required: true },
+      },
+    ],
+    default: [],
+  })
+  path!: Array<{
+    id?: string;
+    coordinates: [number, number];
+  }>;
+
   //   @Prop({ type: [{ type: Types.ObjectId, ref: 'SpotMedia' }] })
   //   photos: SpotMedia[];
 }
