@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-app
+  labels:
+    app: user-app
+    version: v1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: user-app
+  template:
+    metadata:
+      labels:
+        app: user-app
+        version: v1
+    spec:
+      containers:
+        - name: user-app
+          image: user-app:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+              name: http
+              protocol: TCP
+           env:
+             - name: NODE_ENV
+               valueFrom:
+                 configMapKeyRef:
+                   name: user-app-config
+                   key: NODE_ENV
+             - name: USER_APP_PORT
+               valueFrom:
+                 configMapKeyRef:
+                   name: user-app-config
+                   key: USER_APP_PORT
+             - name: CORS_ORIGINS
+               valueFrom:
+                 configMapKeyRef:
+                   name: user-app-config
+                   key: CORS_ORIGINS
+            - name: USER_APP_MONGO_USER
+              valueFrom:
+                secretKeyRef:
+                  name: user-app-secrets
+                  key: mongo-user
+            - name: USER_APP_MONGO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: user-app-secrets
+                  key: mongo-password
+            - name: MONGO_HOST
+              value: 'mongo-service'
+            - name: MONGO_PORT
+              value: '27017'
+            - name: MONGO_INITDB_DATABASE
+              value: 'north_app'
+            - name: MONGO_AUTHSOURCE
+              value: 'admin'
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: user-app-secrets
+                  key: jwt-secret
+          resources:
+            requests:
+              memory: '128Mi'
+              cpu: '100m'
+            limits:
+              memory: '512Mi'
+              cpu: '500m'
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1001
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            capabilities:
+              drop:
+                - ALL
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
