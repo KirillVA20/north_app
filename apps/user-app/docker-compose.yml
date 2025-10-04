@@ -10,16 +10,15 @@ services:
     environment:
       - NODE_ENV=production
       - USER_APP_PORT=3000
-      - MONGODB_URI=mongodb://mongo:27017/north_app
       - JWT_SECRET=your-jwt-secret-here
-      - MONGO_HOST=mongo  # ✅ Имя сервиса
+      - MONGO_HOST=mongo # ✅ Имя сервиса
       - MONGO_PORT=27017
       - USER_APP_MONGO_USER=admin
       - USER_APP_MONGO_PASSWORD=password
       - MONGO_INITDB_DATABASE=north_app
       - MONGO_AUTHSOURCE=admin
     depends_on:
-      - mongo  # ✅ Ждет запуска MongoDB
+      - mongo # ✅ Ждет запуска MongoDB
     networks:
       - north-network
 
