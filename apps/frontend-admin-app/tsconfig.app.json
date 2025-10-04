@@ -15,6 +15,8 @@
     "paths": {
       "@/*": ["src/*"],
       "@/app/*": ["src/app/*"],
+      "@ui": ["src/shared/ui/index.ts"],
+      "@ui/*": ["src/shared/ui/*"],
       "test": ["./jest.setup.tsx"]
     },
   },

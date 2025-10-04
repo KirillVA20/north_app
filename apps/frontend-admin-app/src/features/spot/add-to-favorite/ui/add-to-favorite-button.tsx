@@ -6,7 +6,7 @@ type AddToFavoriteButtonProps = {
   isLoading: boolean;
   onToggle: () => void;
   size?: 'sm' | 'md' | 'lg';
-  variant?: 'solid' | 'outline' | 'ghost';
+  variant?: 'solid' | 'outline' | 'ghost' | 'surface';
 };
 
 export const AddToFavoriteButton = ({
@@ -25,7 +25,14 @@ export const AddToFavoriteButton = ({
       colorScheme={isFavorite ? 'red' : 'gray'}
       aria-label={isFavorite ? 'Удалить из избранного' : 'Добавить в избранное'}
     >
-      {isLoading ? <Spinner size="xs" /> : <FavoriteIcon />}
+      {isLoading ? (
+        <Spinner size="xs" />
+      ) : (
+        <FavoriteIcon
+          color={isFavorite ? '#ff6b6b' : '#fff'}
+          fill={isFavorite ? '#ff6b6b' : null}
+        />
+      )}
     </IconButton>
   );
 };

@@ -28,7 +28,7 @@ export default function App() {
     <QueryClientProvider>
       <Provider>
         <Header />
-        <Container height="100%" paddingTop={`40px`}>
+        <Container height="100%">
           <SimpleGrid columns={12} height={`100%`} gap={10}>
             <GridItem colSpan={12}>
               <SpotPage />

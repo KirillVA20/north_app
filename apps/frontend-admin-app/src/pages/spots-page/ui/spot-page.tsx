@@ -14,7 +14,7 @@ export const SpotPage = () => {
 
   return (
     <Wrap gap={`10px`} width="100%">
-      <Tabs.Root defaultValue="all" variant="enclosed">
+      <Tabs.Root defaultValue="created" variant="enclosed">
         <Tabs.List>
           <Tabs.Trigger value="all">Все</Tabs.Trigger>
           <Tabs.Trigger value="created">Созданные</Tabs.Trigger>

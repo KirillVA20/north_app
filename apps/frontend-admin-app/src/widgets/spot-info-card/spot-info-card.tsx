@@ -10,7 +10,7 @@ export type SpotInfoCardProps = {
 
 export const SpotInfoCard = ({ spotData, onDelete }: SpotInfoCardProps) => {
   const { deleteSpot, isPending } = useDeleteSpot();
-  const { id, name, description, previewImageUrl, location } = spotData;
+  const { id, name, description, previewImageUrl, location, path } = spotData;
   const [lng, lat] = location.coordinates;
   const { data: userData } = useUserById(spotData.userId);
 
@@ -29,10 +29,11 @@ export const SpotInfoCard = ({ spotData, onDelete }: SpotInfoCardProps) => {
       previewImageUrl={previewImageUrl}
       lng={lng}
       lat={lat}
+      path={path}
       author={userData?.username}
       isPending={isPending}
       onDelete={handleDelete}
-      toFavoriteNode={<AddToFavorite spotId={id} />}
+      toFavoriteNode={<AddToFavorite spotId={id} variant="surface" />}
     />
   );
 };

@@ -12,11 +12,11 @@ export const loginSchema = z.object({
 export type LoginFormValues = z.infer<typeof loginSchema>;
 
 type LoginFormProps = {
-  onSubmitHandler?: (token: string) => void;
+  onSubmitHandler?: (tokens: { accessToken: string; refreshToken: string }) => void;
 };
 
 export function useLoginForm({ onSubmitHandler }: LoginFormProps) {
-  const setToken = useAuthStore((state) => state.setToken);
+  const setTokens = useAuthStore((state) => state.setTokens);
 
   const {
     register,
@@ -30,12 +30,15 @@ export function useLoginForm({ onSubmitHandler }: LoginFormProps) {
   const onSubmit = handleSubmit(async (data: LoginFormValues) => {
     try {
       const res = await signIn(data);
-      setToken(res.access_token);
-      onSubmitHandler?.(res.access_token);
+      setTokens(res.access_token, res.refresh_token);
+      onSubmitHandler?.({ 
+        accessToken: res.access_token, 
+        refreshToken: res.refresh_token 
+      });
     } catch (error: any) {
       setError('username', {
         type: 'manual',
-        message: error?.response?.data?.message || 'Ошибка регистрации',
+        message: error?.response?.data?.message || 'Ошибка входа',
       });
     }
   });

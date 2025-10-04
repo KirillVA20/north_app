@@ -1,5 +1,8 @@
 import { Box, Stack, Text, Image, Flex, IconButton } from '@chakra-ui/react';
-import { Map, FavoriteIcon, DeleteIcon } from '@test/ui';
+import { Switch } from '@/shared/ui';
+import { Map, DeleteIcon } from '@test/ui';
+import { useState } from 'react';
+import { PathPointType } from '@/enteties/spot/model/schema/spot.schema';
 
 export type SpotInfoCardViewProps = {
   name: string;
@@ -7,6 +10,7 @@ export type SpotInfoCardViewProps = {
   previewImageUrl?: string;
   lng: number;
   lat: number;
+  path: PathPointType[];
   author?: string;
   isPending?: boolean;
   onDelete?: () => void;
@@ -20,57 +24,77 @@ export const SpotInfoCardView = ({
   lng,
   lat,
   author,
+  path,
   isPending,
   onDelete,
   toFavoriteNode,
-}: SpotInfoCardViewProps) => (
-  <Stack gap={6} maxWidth="800px" mx="auto">
-    <Text fontSize="xl" fontWeight="bold">
-      {name}
-    </Text>
-    {previewImageUrl && (
-      <Image
-        src={previewImageUrl}
-        width="100%"
-        height={300}
-        objectFit="cover"
-        borderRadius={8}
-      />
-    )}
+}: SpotInfoCardViewProps) => {
+  const [showPath, setShowPath] = useState(false);
 
-    {description && (
-      <Box>
-        <Text>{description}</Text>
-      </Box>
-    )}
+  return (
+    <Stack gap={6} maxWidth="800px" mx="auto">
+      <Text fontSize="xl" fontWeight="bold">
+        {name}
+      </Text>
+      {previewImageUrl && (
+        <Image
+          src={previewImageUrl}
+          width="100%"
+          height={300}
+          objectFit="cover"
+          borderRadius={8}
+        />
+      )}
 
-    <Box>
-      <Text fontWeight="semibold">Расположение:</Text>
-      <Box borderRadius={8} overflow="hidden">
-        <Map height={400} center={[lng, lat]} pointCoords={[lng, lat]} />
-      </Box>
-    </Box>
+      {description && (
+        <Box>
+          <Text>{description}</Text>
+        </Box>
+      )}
 
-    <Flex justifyContent="space-between" alignItems="center">
-      <Box>
-        {author && (
-          <Text fontSize="sm" color="gray.500">
-            Автор: {author}
-          </Text>
-        )}
-      </Box>
-      <Flex justifyContent={'flex-end'} gap={3}>
-        {toFavoriteNode}
-        <IconButton
-          colorScheme="red"
-          variant="surface"
-          onClick={onDelete}
-          loading={isPending}
-          disabled={isPending}
-        >
-          <DeleteIcon />
-        </IconButton>
+      <Flex flexDirection="column" gap={5}>
+        <Flex justifyContent="space-between">
+          <Text fontWeight="semibold">Расположение:</Text>
+          {!!path?.length && (
+            <Switch
+              checked={showPath}
+              onCheckedChange={setShowPath}
+              label={showPath ? 'Спрятать путь' : 'Показать путь'}
+            />
+          )}
+        </Flex>
+        <Box borderRadius={8} overflow="hidden">
+          <Map
+            polylineItems={showPath && path ? path : []}
+            pointItems={showPath && path ? path : []}
+            height={400}
+            center={[lng, lat]}
+            pointCoords={[lng, lat]}
+          />
+        </Box>
       </Flex>
-    </Flex>
-  </Stack>
-);
+
+      <Flex justifyContent="space-between" alignItems="center">
+        <Box>
+          {author && (
+            <Text fontSize="sm" color="gray.500">
+              Автор: {author}
+            </Text>
+          )}
+        </Box>
+        <Flex justifyContent={'flex-end'} gap={3}>
+          {toFavoriteNode}
+          <IconButton
+            colorScheme="red"
+            variant="surface"
+            onClick={onDelete}
+            loading={isPending}
+            disabled={isPending}
+          >
+            <DeleteIcon />
+          </IconButton>
+        </Flex>
+      </Flex>
+    </Stack>
+  );
+};

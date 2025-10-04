@@ -4,7 +4,7 @@ import { AddToFavoriteButton } from './ui/add-to-favorite-button';
 type AddToFavoriteProps = {
   spotId: string;
   size?: 'sm' | 'md' | 'lg';
-  variant?: 'solid' | 'outline' | 'ghost';
+  variant?: 'solid' | 'outline' | 'ghost' | 'surface';
   onToggle?: (isFavorite: boolean) => void;
 };
 

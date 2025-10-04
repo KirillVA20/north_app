@@ -10,9 +10,11 @@ import {
   Flex,
   Image,
 } from '@chakra-ui/react';
-import { Map } from '@test/ui';
 
 import { CreateSpotSchema, type CreateSpotSchemaType } from '@/enteties/spot';
+import { useState } from 'react';
+import { PathPointType } from '@/enteties/spot/model/schema/spot.schema';
+import { SpotMap } from './spot-map';
 
 type CreateSpotFormProps = {
   onSubmit: (values?: CreateSpotSchemaType) => void;
@@ -35,22 +37,22 @@ export const CreateSpotForm = ({
     mode: 'onTouched',
   });
 
-  const lng = form.watch('lng');
-  const lat = form.watch('lat');
-  const previewImageUrl = form.watch('previewImageUrl');
-
   const { register, handleSubmit, formState } = form;
   const { errors } = formState;
 
-  const onSubmitHandler = handleSubmit((values) => {
-    onSubmit(values);
-  });
+  const [path, setPath] = useState<PathPointType[]>([]);
 
-  const onMapClick = (coords: [number, number]) => {
+  const previewImageUrl = form.watch('previewImageUrl');
+
+  const addsPointToForm = (coords: [number, number]) => {
     const [lng, lat] = coords;
     form.setValue('lng', lng);
     form.setValue('lat', lat);
   };
+
+  const onSubmitHandler = handleSubmit((values: CreateSpotSchemaType) => {
+    onSubmit({ ...values, path });
+  });
 
   return (
     <form onSubmit={onSubmitHandler}>
@@ -121,9 +123,7 @@ export const CreateSpotForm = ({
           </Field.Root>
         </Flex>
 
-        <Box borderRadius={8} overflow="hidden">
-          <Map height={400} onMapClick={onMapClick} pointCoords={[lng, lat]} />
-        </Box>
+        <SpotMap onAddPoint={addsPointToForm} onPathChange={setPath} />
 
         <Field.Root>
           <Field.Label>Описание</Field.Label>
