@@ -1,101 +1,166 @@
-# Test
+# North App
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+Полнофункциональное веб-приложение для управления достопримечательностями и путеводителями. Проект построен на базе монорепозитория Nx с использованием современного стека технологий.
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+## 📦 Структура проекта
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/next?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+Проект состоит из нескольких приложений и библиотек:
 
-## Run tasks
+### Приложения (apps)
+- **frontend-app** - Основное клиентское приложение на Next.js 15
+- **frontend-admin-app** - Админ-панель для управления контентом
+- **user-app** - Бэкенд-сервис для управления пользователями (NestJS)
+- **guide-app** - Сервис для управления путеводителями (NestJS)
 
-To run the dev server for your app, use:
+### Библиотеки (libs)
+- **ui** - Переиспользуемые UI компоненты
+- Другие общие модули и утилиты
 
-```sh
-npx nx dev test
+## 🚀 Технологический стек
+
+### Frontend
+- **React** 19
+- **Next.js** 15
+- **TypeScript**
+- **Chakra UI** - UI компоненты
+- **React Hook Form** - управление формами
+- **TanStack React Query** - кэширование и синхронизация данных
+- **Zustand** - управление состоянием
+- **Redux Toolkit** - альтернативное состояние
+- **Yandex Maps** - интеграция с Яндекс картами
+
+### Backend
+- **NestJS** 11 - фреймворк для Node.js
+- **MongoDB** - база данных
+- **Mongoose** - ODM для MongoDB
+- **Passport** - аутентификация
+- **JWT** - токены
+
+### Build & Development
+- **Nx** 21 - монорепозиторий
+- **SWC** - быстрая компиляция TypeScript
+- **Jest** - тестирование
+- **ESLint & Prettier** - линтинг и форматирование
+
+## 💻 Установка и запуск
+
+### Требования
+- Node.js 20+
+- npm или yarn
+- Docker (для MongoDB)
+
+### Установка зависимостей
+```bash
+npm install
+# или
+yarn install
 ```
 
-To create a production bundle:
+### Запуск в режиме разработки
 
-```sh
-npx nx build test
+Запустить все приложения:
+```bash
+npm run start-all
 ```
 
-To see all available targets to run for a project, run:
-
-```sh
-npx nx show project test
+Запустить конкретное приложение:
+```bash
+npx nx serve frontend-app
+npx nx serve frontend-admin-app
+npx nx nx serve user-app
+npx nx serve guide-app
 ```
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+### Запуск базы данных
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Add new projects
-
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
-
-Use the plugin's generator to create new projects.
-
-To generate a new application, use:
-
-```sh
-npx nx g @nx/next:app demo
+Используя Docker Compose:
+```bash
+docker-compose up -d
 ```
 
-To generate a new library, use:
+Это запустит MongoDB с инициализацией по переменным окружения из файла `.env`.
 
-```sh
-npx nx g @nx/react:lib mylib
+### Сборка для продакшена
+```bash
+npx nx build frontend-app
+npx nx build user-app
+npx nx build guide-app
+npx nx build frontend-admin-app
 ```
 
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
+## 📝 Переменные окружения
 
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+Создайте файл `.env` в корне проекта:
 
-## Set up CI!
+```env
+# MongoDB
+MONGO_INITDB_ROOT_USERNAME=root
+MONGO_INITDB_ROOT_PASSWORD=password
+MONGO_INITDB_DATABASE=north_db
 
-### Step 1
+# User App MongoDB
+USER_APP_MONGO_USER=user_app
+USER_APP_MONGO_PASSWORD=user_password
 
-To connect to Nx Cloud, run the following command:
-
-```sh
-npx nx connect
+# Guide App MongoDB
+GUIDE_APP_MONGO_USER=guide_app
+GUIDE_APP_MONGO_PASSWORD=guide_password
 ```
 
-Connecting to Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
+## 🛠️ Команды Nx
 
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-### Step 2
-
-Use the following command to configure a CI workflow for your workspace:
-
-```sh
-npx nx g ci-workflow
+Просмотр всех проектов и задач:
+```bash
+npx nx graph
 ```
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+Просмотр доступных целей для проекта:
+```bash
+npx nx show project frontend-app
+```
 
-## Install Nx Console
+Запуск тестов:
+```bash
+npx nx test
+npx nx test frontend-app
+```
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+Линтинг:
+```bash
+npx nx lint
+npx nx lint frontend-app
+```
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## 📂 Структура директорий
 
-## Useful links
+```
+north_app/
+├── apps/                      # Приложения
+│   ├── frontend-app/         # Основное приложение
+│   ├── frontend-admin-app/   # Админ-панель
+│   ├── user-app/             # Сервис пользователей
+│   └── guide-app/            # Сервис путеводителей
+├── libs/                      # Переиспользуемые библиотеки
+│   └── ui/                    # UI компоненты
+├── packages/                  # Пакеты
+├── docker-compose.yml         # Docker Compose конфигурация
+├── package.json               # Root package.json
+├── nx.json                    # Конфигурация Nx
+└── tsconfig.base.json         # Base TypeScript конфигурация
+```
 
-Learn more:
+## 🔗 Документация
 
-- [Learn more about this workspace setup](https://nx.dev/nx-api/next?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+- [Nx документация](https://nx.dev)
+- [Next.js документация](https://nextjs.org/docs)
+- [NestJS документация](https://docs.nestjs.com)
+- [MongoDB документация](https://docs.mongodb.com)
 
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## 📚 Дополнительная информация
+
+- [DOCKER.md](apps/user-app/DOCKER.md) - Информация о Docker развертывании
+- [K8s README](apps/user-app/k8s/README.md) - Развертывание на Kubernetes
+
+## 📄 Лицензия
+
+MIT
