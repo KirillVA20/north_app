@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  guide-app:
+    build:
+      context: ../../
+      dockerfile: apps/guide-app/Dockerfile
+    ports:
+      - '3001:3001'
+    environment:
+      - NODE_ENV=production
+      - APP_PORT=3001
+      - MONGO_HOST=mongo
+      - MONGO_PORT=27017
+      - USER_APP_MONGO_USER=admin
+      - USER_APP_MONGO_PASSWORD=password
+      - MONGO_INITDB_DATABASE=north_app
+      - MONGO_AUTHSOURCE=admin
+      - USER_APP_API_URL=http://localhost:3000/
+    depends_on:
+      - mongo
+    networks:
+      - north-network
+
+  guide-app-image:
+    image: sumonik/guide-app:latest
+    ports:
+      - '3001:3001'
+    environment:
+      - NODE_ENV=production
+      - USER_APP_PORT=3001
+      - MONGO_HOST=mongo
+      - MONGO_PORT=27017
+      - USER_APP_MONGO_USER=admin
+      - USER_APP_MONGO_PASSWORD=password
+      - MONGO_INITDB_DATABASE=north_app
+      - MONGO_AUTHSOURCE=admin
+    depends_on:
+      - mongo
+    networks:
+      - north-network
+
+  mongo:
+    image: mongo:7.0
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password
+      - MONGO_INITDB_DATABASE=north_app
+    networks:
+      - north-network
+
+volumes:
+  mongo_data:
+
+networks:
+  north-network:
+    driver: bridge

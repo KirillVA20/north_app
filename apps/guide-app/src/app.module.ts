@@ -17,7 +17,7 @@ import { HttpModule } from '@nestjs/axios';
     }),
     MongooseModule.forRootAsync({
       useFactory: () => ({
-        uri: `mongodb://${process.env.USER_APP_MONGO_USER}:${process.env.USER_APP_MONGO_PASSWORD}@${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_INITDB_DATABASE}`,
+        uri: `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_INITDB_DATABASE}`,
         authSource: process.env.MONGO_AUTHSOURCE,
         retryAttempts: 5,
         retryDelay: 3000,

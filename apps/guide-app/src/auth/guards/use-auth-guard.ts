@@ -7,6 +7,8 @@ import {
 } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 
+const USER_API = process.env.USER_APP_API_URL ?? 'http://localhost:3001';
+
 @Injectable()
 export class UseAuthGuard implements CanActivate {
   constructor(private readonly httpService: HttpService) {}
@@ -23,7 +25,7 @@ export class UseAuthGuard implements CanActivate {
 
     try {
       const response = await firstValueFrom(
-        this.httpService.get('http://localhost:3001/auth/profile', {
+        this.httpService.get(`${USER_API}/auth/profile`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

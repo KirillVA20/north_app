@@ -10,20 +10,20 @@ import { Type } from 'class-transformer';
 
 class PathDto {
   @IsNotEmpty()
-  readonly type: 'LineString';
+  readonly type!: 'LineString';
 
   @IsArray()
   @ArrayMinSize(2)
   @ValidateNested({ each: true })
   @Type(() => Array<number>)
-  readonly coordinates: [number, number][]; // [lng, lat][]
+  readonly coordinates!: [number, number][]; // [lng, lat][]
 }
 
 export class UpdateRouteDto {
   @IsString()
   @IsNotEmpty()
   @IsOptional()
-  readonly name: string;
+  readonly name?: string;
 
   @IsString()
   @IsOptional()
@@ -32,7 +32,7 @@ export class UpdateRouteDto {
   @IsOptional()
   @ValidateNested()
   @Type(() => PathDto)
-  readonly path: PathDto;
+  readonly path?: PathDto;
 
   //   @IsArray()
   //   @ArrayMinSize(2)

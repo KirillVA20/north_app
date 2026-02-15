@@ -11,21 +11,21 @@ import { Type } from 'class-transformer';
 class PointDto {
   @IsArray()
   @ArrayMinSize(2)
-  readonly coordinates: [number, number]; // [lng, lat]
+  readonly coordinates!: [number, number]; // [lng, lat]
 
   @IsString()
   @IsOptional()
-  readonly photo: string;
+  readonly photo?: string;
 
   @IsString()
   @IsOptional()
-  readonly description: string;
+  readonly description?: string;
 }
 
 export class CreateRouteDto {
   @IsString()
   @IsNotEmpty()
-  readonly name: string;
+  readonly name!: string;
 
   @IsString()
   readonly description?: string;
@@ -34,5 +34,5 @@ export class CreateRouteDto {
   @ArrayMinSize(2)
   @ValidateNested({ each: true })
   @Type(() => PointDto)
-  readonly points: PointDto[];
+  readonly points!: PointDto[];
 }

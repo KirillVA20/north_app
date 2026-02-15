@@ -1,7 +1,6 @@
 import { Controller, Post, Body, Delete, Param, Get } from '@nestjs/common';
 
 import { CreateRouteDto } from './dto/create-route.dto';
-import { UpdateRouteDto } from './dto/update-route.dto';
 import { RoutesService } from './route.service';
 
 @Controller('routes')
